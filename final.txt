@@ -1,0 +1,1003 @@
+#include <Windows.h>
+#include <GL\glew.h>
+#include <glut.h>
+#include <iostream>
+
+using namespace std;
+int tx = 1, ty = 0, sx = 1, sy = 0;
+int vy = 2, cnt1 = 0;
+int uy = 3, py = 1;
+int mx = 2, my = 0, tx1 = 2, cnt3 = 0, zy = 0;
+int nx = 0;
+void changeViewPort(int w, int h)
+{
+	glViewport(0, 0, w, h);
+}
+
+void myinit()
+{
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(-30, 200, -30, 300);
+	glMatrixMode(GL_MODELVIEW);
+
+}
+void init()
+{
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(-230, 400, -230, 400);
+	glMatrixMode(GL_MODELVIEW);
+
+}
+void initse()
+{
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(-150, 150, -150, 150);
+	glMatrixMode(GL_MODELVIEW);
+	//glEnable(GL_COLOR_MATERIAL);
+}
+int flag3 = 0, flag4 = 0;
+
+//int flag3 = 0, flag4 = 0;
+void idlefunc()
+{
+	if (cnt3 == 20) { flag3 = flag4 = 1; }
+	if (cnt3 == 0) {
+		flag3 = 0;
+		glLoadIdentity();
+		glColor3f(1, .4, 0);
+	}
+	if (cnt3 < 10 && mx < 21)
+	{
+		tx1 = tx1 + 2;
+		mx = mx + 2;
+		for (int i = 0;i < 60000000;i++);
+		glFlush();
+		glutPostRedisplay();
+		cnt3++;
+
+	}
+	mx = 8;
+	if (zy > -50 && cnt3 >= 10 && cnt3 <= 20)
+	{
+		if (nx > -38)
+		{
+			if (my > -20)
+				my = my - 2;
+			nx = nx - 2;
+		}
+		zy = zy - 2;
+		//sx = 12;
+		//sy = sy - 1;
+		for (int i = 0;i < 600000;i++);
+		glutPostRedisplay();
+		cnt3--;
+	}
+}
+
+void DrawEllipse(float cx, float cy, float rx, float ry, int num_segments)
+{
+	float theta = 2 * 3.1415926 / float(num_segments);
+	float c = cosf(theta);
+	float s = sinf(theta);
+	float t;
+
+	float x = 1;
+	float y = 0;
+
+	glBegin(GL_LINE_LOOP);
+	for (int ii = 0; ii < num_segments; ii++)
+	{
+		glVertex2f(x * rx + cx, y * ry + cy);
+
+		t = x;
+		x = c * x - s * y;
+		y = s * t + c * y;
+	}
+	glEnd();
+}
+int flag = 0, cnt0 = 0;
+void filt()
+{
+	if (cnt0 == 20) { flag = 1; }
+	if (cnt0 == 0) {
+		flag = 0;
+		glLoadIdentity();
+		glColor3f(1, .4, 0);
+	}
+	//int cnt1 = cnt;
+	if (cnt0 < 10 && tx < 21)
+	{
+		tx = tx + 1;
+		sx = sx + 1;
+		//for (int i = 0;i < 60000000;i++);
+		glFlush();
+		glutPostRedisplay();
+		cnt0++;
+
+	}
+	if (ty > -58 && sy > -55 && cnt0 >= 10 && cnt0 <= 20)
+	{
+		tx = 10;
+		ty = ty - 1;
+		sx = 12;
+		sy = sy - 1;
+		//for (int i = 0;i < 60000000;i++);
+		glutPostRedisplay();
+		cnt0--;
+	}
+
+}
+void DrawCircle(float cx, float cy, float r, int num_segments)
+{
+	float theta = 2 * 3.1415926 / float(num_segments);
+	float c = cosf(theta);//precalculate the sine and cosine
+	float s = sinf(theta);
+	float t;
+
+	float x = r;
+	float y = 0;
+
+	glBegin(GL_LINE_LOOP);
+	for (int ii = 0; ii < num_segments; ii++)
+	{
+		glVertex2f(x + cx, y + cy);
+		t = x;
+		x = c * x - s * y;
+		y = s * t + c * y;
+	}
+	glEnd();
+	//glutPostRedisplay();
+}
+int flag1 = 0;
+void func2()
+{
+	if (cnt1 == 14) { flag1 = 1; }
+	if (cnt1 == 0) {
+		flag1 = 0;
+		glLoadIdentity();
+		glColor3f(1, .4, 0);
+	}
+	//int cnt1 = cnt;
+	if (flag1 == 0)
+	{
+		vy = vy + 2;
+		//for (int i = 0;i < 60000000;i++);
+		uy = uy + 3;
+		py = py + 1;
+		glFlush();
+		glutPostRedisplay();
+		cnt1++;
+
+	}
+	else
+	{
+		vy = vy - 2;
+		uy = uy - 3;
+		py = py - 1;
+		//for (int i = 0;i < 60000000;i++);
+		glutPostRedisplay();
+		cnt1--;
+	}
+
+}
+void render2()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(1, 1, 1, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glColor3f(0, 0, 0);
+	char str0[] = "Raw Water";
+	char str1[] = "Flash Mix";
+	char srt2[] = "Flocculation Basin";
+	char str3[] = "High Speed";
+	char str4[] = "Medium Speed";
+	char str5[] = "Low Speed";
+	char str6[] = "To Sedimentation Chamber";
+	glRasterPos2f(-190, 0);
+	for (int i = 0;i < strlen(str0);i++)
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, str0[i]);
+	glRasterPos2f(6, -140);
+	for (int i = 0;i < strlen(str3);i++)
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, str3[i]);
+	glRasterPos2f(90, -140);
+	for (int i = 0;i < strlen(str4);i++)
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, str4[i]);
+
+	glRasterPos2f(190, -140);
+	for (int i = 0;i < strlen(str5);i++)
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, str5[i]);
+
+	glRasterPos2f(-90, 140);
+	for (int i = 0;i < strlen(str1);i++)
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, str1[i]);
+
+	glRasterPos2f(260, -50);
+	for (int i = 0;i < strlen(str6);i++)
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, str6[i]);
+	glColor3f(0, 0, 1);
+	glLineWidth(4);
+
+	//glPushMatrix();
+	glBegin(GL_LINES);
+	glVertex2f(-140, 40);
+	glVertex2f(-110, 40);
+	glVertex2f(-110, 40);
+	glVertex2f(-110, 120);
+	glVertex2f(-110, 120);
+	glVertex2f(260, 120);
+	glVertex2f(260, 120);
+	glVertex2f(260, -80);
+	glVertex2f(260, -80);
+	glVertex2f(290, -80);
+	glEnd();
+	//glPopMatrix();
+
+	//glPushMatrix();
+	glBegin(GL_LINE_STRIP);
+	glVertex2f(-140, 20);
+	glVertex2f(-110, 20);
+	glVertex2f(-110, -10);
+	glVertex2f(-30, -10);
+	glVertex2f(-30, 80);
+	glVertex2f(-5, 80);
+	glVertex2f(-5, -110);
+	glVertex2f(290, -110);
+	glEnd();
+
+	glColor3f(0.74920, 0.847059, 0.847059);
+	glBegin(GL_POLYGON);
+	glVertex2f(-140, 40);
+	glVertex2f(-110, 40);
+	glVertex2f(-110, 20);
+	glVertex2f(-140, 20);
+	glEnd();
+	glColor3f(0.74920, 0.847059, 0.847059);
+	glBegin(GL_POLYGON);
+	glVertex2f(-110, -10);
+	glVertex2f(-110, 120);
+	glVertex2f(-30, 120);
+	glVertex2f(-30, -10);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex2f(-110, 80);
+	glVertex2f(-110, 120);
+	glVertex2f(260, 120);
+	glVertex2f(260, 80);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex2f(-5, -110);
+	glVertex2f(-5, 80);
+	glVertex2f(260, 80);
+	glVertex2f(260, -110);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex2f(260, -110);
+	glVertex2f(260, -80);
+	glVertex2f(290, -80);
+	glVertex2f(290, -110);
+	glEnd();
+	glColor3f(0, 0, 0);
+	//glPopMatrix();
+	int num_segments = 180;
+	float cx = -70, cy = 123.5, rx = 10, ry = 5;
+	//glPushMatrix();
+	DrawEllipse(cx, cy, rx, ry, num_segments);
+	cx = -60.5, cy = 60, rx = 10, ry = 5, num_segments = 180;
+	DrawEllipse(cx, cy, rx, ry, num_segments);
+	cx = -80, cy = 60, rx = 10, ry = 5, num_segments = 180;
+	DrawEllipse(cx, cy, rx, ry, num_segments);
+	glBegin(GL_LINES);
+	glVertex2f(43, 120);
+	glVertex2f(43, 5);
+	glEnd();
+	cx = 43, cy = 125, rx = 10, ry = 5, num_segments = 180;
+	DrawEllipse(cx, cy, rx, ry, num_segments);
+	cx = 33, cy = 5, rx = 10, ry = 5, num_segments = 180;
+	DrawEllipse(cx, cy, rx, ry, num_segments);
+	cx = 53, cy = 5, rx = 10, ry = 5, num_segments = 180;
+	DrawEllipse(cx, cy, rx, ry, num_segments);
+	glBegin(GL_LINES);
+	glVertex2f(128, 120);
+	glVertex2f(128, 5);
+	glEnd();
+	cx = 128, cy = 125, rx = 10, ry = 5, num_segments = 180;
+	DrawEllipse(cx, cy, rx, ry, num_segments);
+	cx = 118, cy = 5, rx = 10, ry = 5, num_segments = 180;
+	DrawEllipse(cx, cy, rx, ry, num_segments);
+	cx = 138, cy = 5, rx = 10, ry = 5, num_segments = 180;
+	DrawEllipse(cx, cy, rx, ry, num_segments);
+	glBegin(GL_LINES);
+	glVertex2f(213, 120);
+	glVertex2f(213, 5);
+	glEnd();
+	char str[] = "FLOCCULATION";
+	glRasterPos2f(30, 200);
+	for (int i = 0;i < strlen(str);i++)
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, str[i]);
+	cx = 213, cy = 125, rx = 10, ry = 5, num_segments = 180;
+	DrawEllipse(cx, cy, rx, ry, num_segments);
+	cx = 203, cy = 5, rx = 10, ry = 5, num_segments = 180;
+	DrawEllipse(cx, cy, rx, ry, num_segments);
+	cx = 223, cy = 5, rx = 10, ry = 5, num_segments = 180;
+	DrawEllipse(cx, cy, rx, ry, num_segments);
+	glPopMatrix();
+	//glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glPushMatrix();
+	glPointSize(10);
+	glTranslatef(0, vy, 0);
+	for (int i = 0;i < 60000000;i++);
+	glColor3f(0.78, 0.082, 0.522);
+	glBegin(GL_POINTS);
+	glVertex2f(150, -100 + vy);
+	glVertex2f(155, -100 + vy);
+	glVertex2f(150, -70 + vy);
+	glVertex2f(120, -70 + vy);
+	glVertex2f(125, -70 + vy);
+	glVertex2f(155, -70 + vy);
+	glEnd();
+	glTranslatef(0, uy, 0);
+	glColor3f(0.78, 0.082, 0.522);
+	for (int i = 0;i < 6000;i++);
+	glBegin(GL_POINTS);
+	glVertex2f(80, -70 + uy);
+	glVertex2f(60, -60 + uy);
+	glVertex2f(40, -80 + uy);
+	glVertex2f(20, -70 + uy);
+	glVertex2f(185, -70 + uy);
+	glVertex2f(190, -70 + uy);
+	glVertex2f(185, -65 + uy);
+	glVertex2f(190, -65 + uy);
+
+	glVertex2f(220, -70 + uy);
+	glVertex2f(215, -65 + uy);
+	glVertex2f(215, -70 + uy);
+	glVertex2f(220, -65 + uy);
+	glEnd();
+	glTranslatef(0, py, 0);
+	glColor3f(0.78, 0.082, 0.522);
+	for (int i = 0;i < 60;i++);
+	glBegin(GL_POINTS);
+	glVertex2f(-40, 5 + py);
+	glVertex2f(-90, 5 + py);
+	//glVertex2f(40, -80 + py);
+	//glVertex2f(20, -70 + py);
+	func2();
+	glEnd();
+	glPopMatrix();
+	glLineWidth(3);
+	glColor3f(0, 0, 0);
+	//glPushMatrix();
+	glBegin(GL_LINES);
+	glVertex2f(-70, 120);
+	glVertex2f(-70, 60);
+	glEnd();
+	glLineWidth(4);
+	glColor3f(0, 0, 1);
+	glBegin(GL_LINES);
+	glVertex2f(90, 120);
+	glVertex2f(90, -30);
+	glEnd();
+	glBegin(GL_LINES);
+	glVertex2f(175, -110);
+	glVertex2f(175, 40);
+	glEnd();
+	glutSwapBuffers();
+}
+
+void render3()
+{
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(1, 1, 1, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+
+	glColor3f(0.74902, 0.847059, 0.847059);
+	glLineWidth(4);
+	glBegin(GL_POLYGON);
+	glVertex2f(0, -20);
+	glVertex2f(-40, 0);
+	glVertex2f(-60, -20);
+	glVertex2f(-60, 60);
+	glVertex2f(0, 60);
+	glVertex2f(60, 60);
+	glVertex2f(60, -20);
+	glVertex2f(40, 0);
+	glEnd();
+	glColor3f(0.74902, 0.847059, 0.847059);
+	glBegin(GL_POLYGON);
+	glVertex2f(-60, 60);
+	glVertex2f(-100, 60);
+	glVertex2f(-100, 80);
+	glVertex2f(-60, 80);
+	glVertex2f(100, 80);
+	glVertex2f(100, 60);
+	glVertex2f(60, 60);
+	glEnd();
+	glColor3f(0.74902, 0.847059, 0.847059);
+	glBegin(GL_POLYGON);
+	glVertex2f(-60, 80);
+	glVertex2f(-60, 90);
+	glVertex2f(60, 90);
+	glVertex2f(60, 80);
+	glEnd();
+	glColor3f(0.78, 0.082, 0.522);
+	glBegin(GL_POLYGON);
+	glVertex2f(0, -60);
+	glVertex2f(-60, -20);
+	glVertex2f(-40, 0);
+	glVertex2f(0, -20);
+	glVertex2f(40, 0);
+	glVertex2f(60, -20);
+	glEnd();
+	glColor3f(0, 0, 1);
+	glBegin(GL_LINE_LOOP);
+	glVertex2f(0, -60);
+	glVertex2f(-60, -20);
+	glVertex2f(-60, 60);
+	glVertex2f(-100, 60);
+	glVertex2f(-100, 80);
+	glVertex2f(-60, 80);
+	glVertex2f(-60, 90);
+	glVertex2f(60, 90);
+	glVertex2f(60, 80);
+	glVertex2f(100, 80);
+	glVertex2f(100, 60);
+	glVertex2f(60, 60);
+	glVertex2f(60, -20);
+	glEnd();
+	glColor3f(1, 0, 0);
+	glLineWidth(3);
+	glBegin(GL_LINES);
+	glVertex2f(-130, 70);
+	glVertex2f(-110, 70);
+	glVertex2f(-118, 75);
+	glVertex2f(-110, 70);
+	glVertex2f(-110, 70);
+	glVertex2f(-118, 65);
+	glVertex2f(130, 70);
+	glVertex2f(110, 70);
+	glVertex2f(122, 75);
+	glVertex2f(130, 70);
+	glVertex2f(130, 70);
+	glVertex2f(122, 65);
+	glEnd();
+	glColor3f(0.78, 0.082, 0.522);
+	glPointSize(10);
+	glBegin(GL_POINTS);
+	glVertex2f(40, -90);
+	glEnd();
+	glColor3f(0.78, 0.082, 0.522);
+	glPointSize(5);
+	glBegin(GL_POINTS);
+	glVertex2f(40, -105);
+	glEnd();
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glPushMatrix();
+	glPointSize(10);
+	glTranslatef(mx, my, 0);
+	//glTranslatef(tx1, ty1, 0);
+	glTranslatef(tx1, 0, 0);
+	glColor3f(0.78, 0.082, 0.522);
+	glBegin(GL_POINTS);
+	glVertex2f(-80 + mx, 70 + zy);
+	glVertex2f(-60 + mx, 55 + nx);
+	glVertex2f(-90 + mx, 67 + zy);
+	glVertex2f(-80 + mx, 78 + zy);
+	glVertex2f(-62 + mx, 70 + zy);
+	glVertex2f(-54 + mx, 25 + my);
+	glVertex2f(-44 + mx, 50 + nx);
+	glVertex2f(-44 + mx, 30 + my);
+	glVertex2f(-49 + mx, 49 + nx);
+	glVertex2f(-40 + mx, 20 + my);
+	glVertex2f(-50 + mx, 20 + my);
+	glVertex2f(-50 + mx, 10 + my);
+	glEnd();
+	glPopMatrix();
+	glPushMatrix();
+	glColor3f(0.78, 0.082, 0.522);
+	glPointSize(5);
+	glBegin(GL_POINTS);
+	glVertex2f(-98 + tx1, 70);
+	glVertex2f(-80 + tx1, 70);
+	glVertex2f(-78 + tx1, 70);
+	glVertex2f(-62 + tx1, 70);
+	glVertex2f(-50 + tx1, 70);
+	glVertex2f(-10 + tx1, 70);
+	glVertex2f(22 + tx1, 70);
+	glVertex2f(42 + tx1, 70);
+	glVertex2f(60 + tx1, 70);
+	glVertex2f(-62 + tx1, 75);
+	glVertex2f(-50 + tx1, 78);
+	glVertex2f(-10 + tx1, 62);
+	glVertex2f(22 + tx1, 75);
+	glVertex2f(42 + tx1, 78);
+	glVertex2f(60 + tx1, 62);
+	glEnd();
+	glPopMatrix();
+	glColor3f(0, 0, 0);
+	glRasterPos2f(-30, 120);
+	char str[] = "SEDIMENTATION";
+	for (int i = 0;i < strlen(str);i++)
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, str[i]);
+	glRasterPos2f(48, -90);
+	char str1[] = "Weighted particles.";
+	for (int i = 0;i < strlen(str1);i++)
+		glutBitmapCharacter(GLUT_BITMAP_8_BY_13, str1[i]);
+	glRasterPos2f(48, -105);
+	char str2[] = "LightWeight particles.";
+	for (int i = 0;i < strlen(str2);i++)
+		glutBitmapCharacter(GLUT_BITMAP_8_BY_13, str2[i]);
+	glRasterPos2f(-140, 48);
+	char str3[] = "Comes from focculation";
+	for (int i = 0;i < strlen(str3);i++)
+		glutBitmapCharacter(GLUT_BITMAP_8_BY_13, str3[i]);
+	glRasterPos2f(80, 48);
+	char str4[] = "enters into Filteration";
+	for (int i = 0;i < strlen(str4);i++)
+		glutBitmapCharacter(GLUT_BITMAP_8_BY_13, str4[i]);
+	glColor3f(0, 0, 1);
+	glRasterPos2f(-120, -20);
+	char str5[] = "sludge forms and";
+	for (int i = 0;i < strlen(str5);i++)
+		glutBitmapCharacter(GLUT_BITMAP_8_BY_13, str5[i]);
+	glRasterPos2f(-120, -30);
+	char str6[] = "pumped out";
+	for (int i = 0;i < strlen(str6);i++)
+		glutBitmapCharacter(GLUT_BITMAP_8_BY_13, str6[i]);
+	glFlush();
+	glutSwapBuffers();
+}
+void render1()
+{
+	glClearColor(1, 1, 1, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glLineWidth(4);
+	glBegin(GL_POLYGON);
+	glVertex2f(210, 30);
+	glVertex2f(220, 30);
+	glVertex2f(220, 80);
+	glVertex2f(210, 80);
+	glVertex2f(210, 30);
+	glEnd();
+	glBegin(GL_LINE_LOOP);
+	glVertex2f(25, 50);
+	glVertex2f(10, 50);
+	glVertex2f(10, 10);
+	glVertex2f(25, 10);
+	glVertex2f(60, 10);
+	glVertex2f(60, 20);
+	glVertex2f(70, 20);
+	glVertex2f(70, 30);
+	glVertex2f(60, 30);
+	glVertex2f(60, 50);
+	glVertex2f(30, 50);
+	glEnd();
+	glColor3f(0, 0, 1);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//glBegin(GL_LINE_STRIP);
+	glBegin(GL_LINE_LOOP);
+	glVertex2f(25, 50);
+	glVertex2f(10, 50);
+	glVertex2f(10, 10);
+	glVertex2f(25, 10);
+	glVertex2f(60, 10);
+	glVertex2f(60, 20);
+	glVertex2f(70, 20);
+	glVertex2f(70, 30);
+	glVertex2f(60, 30);
+	glVertex2f(60, 50);
+	glVertex2f(30, 50);
+	glEnd();
+	glColor3f(0, 0, 1);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glBegin(GL_LINE_LOOP);
+	glVertex2f(40, 80);
+	glVertex2f(25, 80);
+	glVertex2f(25, 30);
+	glVertex2f(45, 30);
+	glVertex2f(45, 40);
+	glVertex2f(40, 40);
+	glVertex2f(40, 35);
+	glVertex2f(30, 35);
+	glVertex2f(30, 50);
+	glVertex2f(30, 70);
+	glVertex2f(105, 70);
+	glVertex2f(105, 210);
+	glVertex2f(110, 210);
+	glVertex2f(110, 240);
+	glVertex2f(90, 240);
+	glVertex2f(90, 210);
+	glVertex2f(95, 210);
+	glVertex2f(95, 80);
+	glVertex2f(60, 80);
+	glVertex2f(40, 80);
+	glEnd();
+	//glBegin(GL_LINE_STRIP);
+	//glVertex2f(30, 80);
+	//glVertex2f(30, 150);
+	//glVertex2f(20, 150);
+	//glVertex2f(20, 140);
+	//glEnd();
+	glColor3f(0.74920, 0.847059, 0.847059);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glBegin(GL_LINE_LOOP);
+	glVertex2f(15, 140);
+	glVertex2f(15, 180);
+	glVertex2f(30, 180);
+	glVertex2f(30, 190);
+	glVertex2f(15, 190);
+	glVertex2f(15, 210);
+	glVertex2f(30, 210);
+	glVertex2f(30, 220);
+	glVertex2f(80, 220);
+	glVertex2f(80, 80);
+	glVertex2f(30, 80);
+	glVertex2f(30, 150);
+	glVertex2f(20, 150);
+	glVertex2f(20, 140);
+	glEnd();
+	glColor3f(0.74920, 0.847059, 0.847059);
+	glBegin(GL_POLYGON);
+	glVertex2f(15, 140);
+	glVertex2f(15, 150);
+	glVertex2f(20, 150);
+	glVertex2f(20, 140);
+	glEnd();
+	glColor3f(0.74920, 0.847059, 0.847059);
+	glBegin(GL_POLYGON);
+	glVertex2f(15, 150);
+	glVertex2f(15, 180);
+	glVertex2f(30, 180);
+	glVertex2f(30, 150);
+	glEnd();
+	glColor3f(0.74920, 0.847059, 0.847059);
+	glBegin(GL_POLYGON);
+	glVertex2f(30, 80);
+	glVertex2f(30, 215);
+	glVertex2f(80, 215);
+	glVertex2f(80, 80);
+	glEnd();
+	glColor3f(0.74920, 0.847059, 0.847059);
+	glBegin(GL_POLYGON);
+	glVertex2f(15, 190);
+	glVertex2f(15, 210);
+	glVertex2f(30, 210);
+	glVertex2f(30, 190);
+	glEnd();
+	glColor3f(0.74920, 0.847059, 0.847059);
+	glBegin(GL_POLYGON);
+	glVertex2f(90, 210);
+	glVertex2f(90, 240);
+	glVertex2f(110, 240);
+	glVertex2f(110, 210);
+	glEnd();
+	glColor3f(0.74920, 0.847059, 0.847059);
+	glBegin(GL_POLYGON);
+	glVertex2f(95, 210);
+	glVertex2f(105, 210);
+	glVertex2f(105, 70);
+	glVertex2f(95, 70);
+	glEnd();
+	glColor3f(0.74920, 0.847059, 0.847059);
+	glBegin(GL_POLYGON);
+	glVertex2f(25, 80);
+	glVertex2f(95, 80);
+	glVertex2f(95, 70);
+	glVertex2f(25, 70);
+	glEnd();
+	glColor3f(0.74920, 0.847059, 0.847059);
+	glBegin(GL_POLYGON);
+	glVertex2f(25, 70);
+	glVertex2f(25, 30);
+	glVertex2f(30, 30);
+	glVertex2f(30, 70);
+	glEnd();
+	glColor3f(0.74920, 0.847059, 0.847059);
+	glBegin(GL_POLYGON);
+	glVertex2f(25, 30);
+	glVertex2f(25, 35);
+	glVertex2f(45, 35);
+	glVertex2f(45, 30);
+	glEnd();
+	glColor3f(0.74920, 0.847059, 0.847059);
+	glBegin(GL_POLYGON);
+	glVertex2f(40, 35);
+	glVertex2f(40, 40);
+	glVertex2f(45, 40);
+	glVertex2f(45, 35);
+	glEnd();
+	glColor3f(0.74920, 0.847059, 0.847059);
+	glBegin(GL_POLYGON);
+	glVertex2f(10, 10);
+	glVertex2f(10, 45);
+	glVertex2f(60, 45);
+	glVertex2f(60, 10);
+	glEnd();
+	glColor3f(0.74920, 0.847059, 0.847059);
+	glBegin(GL_POLYGON);
+	glVertex2f(60, 20);
+	glVertex2f(60, 30);
+	glVertex2f(70, 30);
+	glVertex2f(70, 20);
+	glEnd();
+	glColor3f(0, 0, 1);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glBegin(GL_LINE_LOOP);
+	glVertex2f(15, 140);
+	glVertex2f(15, 180);
+	glVertex2f(30, 180);
+	glVertex2f(30, 190);
+	glVertex2f(15, 190);
+	glVertex2f(15, 210);
+	glVertex2f(30, 210);
+	glVertex2f(30, 220);
+	glVertex2f(80, 220);
+	glVertex2f(80, 80);
+	glVertex2f(30, 80);
+	glVertex2f(30, 150);
+	glVertex2f(20, 150);
+	glVertex2f(20, 140);
+	glEnd();
+	glColor3f(0, 0, 1);
+	glLineWidth(2);
+	glBegin(GL_LINE_STRIP);
+	glVertex2f(25, 50);
+	glVertex2f(25, 30);
+	glVertex2f(45, 30);
+	glVertex2f(45, 40);
+	glVertex2f(40, 40);
+	glVertex2f(40, 35);
+	glVertex2f(30, 35);
+	glVertex2f(30, 50);
+	glEnd();
+	glColor3f(0.8, 0.2, 0.2);
+	glPointSize(30);
+	glBegin(GL_POINTS);
+	glVertex2f(66, 90);
+	glVertex2f(74, 90);
+	glVertex2f(50, 90);
+	glVertex2f(35, 90);
+	glEnd();
+	glColor3f(0, 0, 1);
+	int x, y, cx = 18, cy = 130;
+	for (int i = 0;i <= 360;i++)
+	{
+		glPointSize(2.5);
+		glBegin(GL_POINTS);
+		double angle = (3.14*i) / 180;
+		x = cx + 10 * cos(angle);
+		y = cy + 10 * sin(angle);
+		glVertex2f(x, y);
+		glEnd();
+
+	}
+	glLineWidth(3);
+	glBegin(GL_LINES);
+	glVertex2f(45, 80);
+	glVertex2f(55, 80);
+	glEnd();
+	glColor3f(0, 0, 0);
+	glBegin(GL_LINES);
+	glVertex2f(43, 85);
+	glVertex2f(43, 75);
+	glVertex2f(42, 75);
+	glVertex2f(43, 72);
+	glVertex2f(43, 72);
+	glVertex2f(44, 75);
+	glVertex2f(57, 85);
+	glVertex2f(57, 75);
+	glVertex2f(56, 75);
+	glVertex2f(57, 72);
+	glVertex2f(57, 72);
+	glVertex2f(58, 75);
+	glVertex2f(38, 75);
+	glVertex2f(30, 75);
+	glVertex2f(30, 76);
+	glVertex2f(29, 75);
+	glVertex2f(29, 75);
+	glVertex2f(30, 74);
+	glEnd();
+	glBegin(GL_LINES);
+	glVertex2f(27, 60);
+	glVertex2f(27, 48);
+	glVertex2f(26, 49);
+	glVertex2f(27, 48);
+	glVertex2f(27, 48);
+	glVertex2f(28, 49);
+	glEnd();
+	glBegin(GL_LINES);
+	glVertex2f(43, 35);
+	glVertex2f(43, 43);
+	glVertex2f(42, 42);
+	glVertex2f(43, 43);
+	glVertex2f(43, 43);
+	glVertex2f(44, 42);
+	glEnd();
+	glBegin(GL_LINES);
+	glVertex2f(55, 43);
+	glVertex2f(55, 30);
+	glVertex2f(54, 31);
+	glVertex2f(55, 30);
+	glVertex2f(55, 30);
+	glVertex2f(56, 31);
+	glEnd();
+	glBegin(GL_LINES);
+	glVertex2f(58, 25);
+	glVertex2f(63, 25);
+	glVertex2f(62, 26);
+	glVertex2f(63, 25);
+	glVertex2f(63, 25);
+	glVertex2f(62, 24);
+	glEnd();
+	glColor3f(0.7, 0.4, 0);
+	//glColor3f(0.74920, 0.847059, 0.847059);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glBegin(GL_POLYGON);
+	glVertex2f(30, 100);
+	glVertex2f(30, 120);
+	glVertex2f(80, 120);
+	glVertex2f(80, 100);
+	glEnd();
+	glColor3f(1, 0, 0);
+	glLineWidth(3);
+	glBegin(GL_LINES);
+	glVertex2f(75, 25);
+	glVertex2f(90, 25);
+	glVertex2f(85, 30);
+	glVertex2f(90, 25);
+	glVertex2f(85, 20);
+	glVertex2f(90, 25);
+	glVertex2f(10, 200);
+	glVertex2f(0, 200);
+	glVertex2f(5, 205);
+	glVertex2f(10, 200);
+	glVertex2f(5, 195);
+	glVertex2f(10, 200);
+	glVertex2f(17, 105);
+	glVertex2f(17, 85);
+	glVertex2f(15, 95);
+	glVertex2f(17, 105);
+	glVertex2f(20, 95);
+	glVertex2f(17, 105);
+	glEnd();
+	glColor3f(0, 0, 0);
+	glRasterPos2f(95, 25);
+	char str1[] = "Purified Water";
+	for (int i = 0;i < strlen(str1);i++)
+		glutBitmapCharacter(GLUT_BITMAP_8_BY_13, str1[i]);
+	glRasterPos2f(95, 234);
+	char str2[] = "Wash";
+	for (int i = 0;i < strlen(str2);i++)
+		glutBitmapCharacter(GLUT_BITMAP_8_BY_13, str2[i]);
+	glRasterPos2f(95, 225);
+	char str3[] = "Storage";
+	for (int i = 0;i < strlen(str3);i++)
+		glutBitmapCharacter(GLUT_BITMAP_8_BY_13, str3[i]);
+	glRasterPos2f(95, 215);
+	char str4[] = "Tank";
+	for (int i = 0;i < strlen(str4);i++)
+		glutBitmapCharacter(GLUT_BITMAP_8_BY_13, str4[i]);
+	glRasterPos2f(-15, 230);
+	char str5[] = "In From";
+	for (int i = 0;i < strlen(str5);i++)
+		glutBitmapCharacter(GLUT_BITMAP_8_BY_13, str5[i]);
+	glRasterPos2f(-15, 220);
+	char str6[] = "Sedimentation";
+	for (int i = 0;i < strlen(str6);i++)
+		glutBitmapCharacter(GLUT_BITMAP_8_BY_13, str6[i]);
+	glRasterPos2f(-15, 210);
+	char str7[] = "Tank";
+	for (int i = 0;i < strlen(str7);i++)
+		glutBitmapCharacter(GLUT_BITMAP_8_BY_13, str7[i]);
+	glRasterPos2f(0, 82);
+	char str8[] = "Wash Drain";
+	for (int i = 0;i < strlen(str8);i++)
+		glutBitmapCharacter(GLUT_BITMAP_8_BY_13, str8[i]);
+	int j = 0;
+	for (int i = 34;i < 45;)
+	{
+		glPointSize(3);
+		glColor3f(0.78, 0.082, 0.522);
+		glBegin(GL_POINTS);
+		glVertex2f(i, 110 + j);
+		i = i + 5;j++;
+		glEnd();
+	}
+	glPointSize(3);
+	glColor3f(0.78, 0.082, 0.522);
+	glBegin(GL_POINTS);
+	glVertex2f(40, 140 + ty);
+	glVertex2f(40, 110);
+	glVertex2f(50, 100);
+	glVertex2f(55, 170 + ty);
+	glVertex2f(55, 105);
+	glVertex2f(58, 108);
+	glVertex2f(45, 130);
+	glVertex2f(46, 135 + ty);
+	glVertex2f(45, 170 + ty);
+	glVertex2f(40, 165 + ty);
+	glVertex2f(43, 160 + ty);
+	glVertex2f(48, 173 + ty);
+	glEnd();
+	glColor3f(0, 0, 0);
+	char str[] = "FILTRATION";
+	glRasterPos2f(30, 250);
+	for (int i = 0;i < strlen(str);i++)
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, str[i]);
+	glPushMatrix();
+	glPointSize(4);
+	for (int i = 0;i < 60000000;i++);
+	glColor3f(0.78, 0.082, 0.522);
+	glTranslatef(tx, ty, 0);
+	glBegin(GL_POINTS);
+	glVertex2f(21 + tx, 200 + ty);
+	glVertex2f(21 + sx, 195 + sy);
+	glVertex2f(25 + tx, 205 + ty);
+	glVertex2f(55 + tx, 193 + ty);
+	glVertex2f(45 + tx, 192 + ty);
+	glVertex2f(50 + tx, 199 + ty);
+	glVertex2f(40 + tx, 198 + ty);
+	glVertex2f(35 + tx, 197 + ty);
+	glVertex2f(38 + tx, 200 + ty);
+	glEnd();
+	filt();
+	glPopMatrix();
+	glutSwapBuffers();
+}
+void s_menu(int id)
+{
+	switch (id)
+	{
+	case 1:init();
+		glutDisplayFunc(render2);
+		break;
+	case 2:initse();
+		glutDisplayFunc(render3);
+		glutIdleFunc(idlefunc);
+		break;
+	case 3:myinit();
+		glutDisplayFunc(render1);
+		break;
+	}
+	glutPostRedisplay();
+}
+int main(int argc, char* argv[]) {
+
+	// Initialize GLUT
+	glutInit(&argc, argv);
+	// Set up some memory buffers for our display
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
+	// Set the window size
+	glutInitWindowSize(700, 700);
+	// Create the window with the title "Hello,GL"
+	glutCreateWindow("Hello, GL");
+	glutPositionWindow(0, 0);
+	// Bind the two functions (above) to respond when necessary
+	glutReshapeFunc(changeViewPort);
+	init();
+	glutDisplayFunc(render2);
+	glutCreateMenu(s_menu);
+	glutAddMenuEntry("flocculation", 1);
+	glutAddMenuEntry("sedimentation", 2);
+	glutAddMenuEntry("filtration", 3);
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
+	//glutIdleFunc(idlefunc);
+
+	// Very important!  This initializes the entry points in the OpenGL driver so we can 
+	// call all the functions in the API.
+	GLenum err = glewInit();
+	if (GLEW_OK != err) {
+		fprintf(stderr, "GLEW error");
+		return 1;
+	}
+
+
+	glutMainLoop();
+	return 0;
+}
